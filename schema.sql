@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS trainers (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  level INTEGER NOT NULL DEFAULT 1,
+  experience INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS pokemons (
+  id SERIAL PRIMARY KEY,
+  trainer_id INTEGER NOT NULL REFERENCES trainers(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  life_point INTEGER NOT NULL,
+  max_life_point INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS attacks (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  damage INTEGER NOT NULL,
+  usage_limit INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pokemon_attacks (
+  pokemon_id INTEGER NOT NULL REFERENCES pokemons(id) ON DELETE CASCADE,
+  attack_id INTEGER NOT NULL REFERENCES attacks(id) ON DELETE CASCADE,
+  usage_count INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (pokemon_id, attack_id)
+);
